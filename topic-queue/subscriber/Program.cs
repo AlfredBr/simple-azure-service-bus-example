@@ -26,7 +26,7 @@ internal class Subscriber : BackgroundService
     {
         if (configuration["subscribe"] is not null)
         {
-            _subscriptionIndex = configuration["subscribe"]?.Equals("even")??true ? 0 : 1;
+            _subscriptionIndex = configuration["subscribe"]?.Equals(Config.SubscriptionName[0])??true ? 0 : 1;
         }
     }
 
@@ -61,7 +61,7 @@ internal class Subscriber : BackgroundService
         }
         catch (TaskCanceledException)
         {
-            //Console.WriteLine("TaskCanceledException");
+            Console.WriteLine("Task Canceled");
         }
         finally
         {
