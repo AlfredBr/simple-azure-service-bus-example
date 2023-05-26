@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Azure.Messaging.ServiceBus;
 using shared;
 
-namespace receiver;
+namespace subscriber;
 
 // https://learn.microsoft.com/en-us/samples/azure/azure-sdk-for-net/azuremessagingservicebus-samples/
 // https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/servicebus/Azure.Messaging.ServiceBus/samples/Sample01_SendReceive.md
