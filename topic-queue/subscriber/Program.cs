@@ -24,7 +24,8 @@ internal class Subscriber : BackgroundService
     private int _subscriptionIndex = 0;
     public Subscriber(IConfiguration configuration)
     {
-        if (configuration["subscribe"] is not null) {
+        if (configuration["subscribe"] is not null)
+        {
             _subscriptionIndex = configuration["subscribe"]?.Equals("even")??true ? 0 : 1;
         }
     }
