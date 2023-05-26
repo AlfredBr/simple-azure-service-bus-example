@@ -29,8 +29,8 @@ Run the *publisher* and it will begin publishing into the topic queue, sending m
 
 Run the *subscriber* with the argument "even" or "odd" to subscribe to one of the subscriptions.
 
-> For example, in the subscription folder: 
-> 
+> For example, in the subscription folder:
+>
 > **dotnet run --subscribe even** will select the "even" subscription.
-> 
+>
 > **dotnet run --subscribe odd** will select the "odd" subscription.
