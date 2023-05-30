@@ -24,3 +24,8 @@ $ruleName = "demo-asb-rulename"
 
 # Set the name for the SAS Policy
 $sasPolicyName = "demo-asb-saspolicyname"
+
+# Subscription and Filter rule names
+$odd = "odd"
+$even = "even"
+$rule = "-rule"
