@@ -24,3 +24,9 @@ New-AzServiceBusQueue -ResourceGroupName $resourceGroupName -Namespace $namespac
 
 # Create the SAS Policy for the queue
 New-AzServiceBusAuthorizationRule -ResourceGroupName $resourceGroupName -Namespace $namespaceName -QueueName $queueName -Name $sasPolicyName -Rights 'Manage', 'Send', 'Listen'
+
+# Get the SAS Policy for the queue
+$sasPolicy = Get-AzServiceBusAuthorizationRule -ResourceGroupName $resourceGroupName -Namespace $namespaceName -QueueName $queueName -Name $sasPolicyName
+
+# Print the primary connection string
+Write-Host "Primary Connection String: $($sasPolicy.PrimaryConnectionString)"
