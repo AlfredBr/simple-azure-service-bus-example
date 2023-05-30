@@ -10,35 +10,36 @@ namespace publisher;
 
 internal static class Program
 {
-    static void Main(string[] args)
-    {
-        var builder = Host.CreateApplicationBuilder(args);
-        builder.Services.AddHostedService<Publisher>();
-        builder.Build().Run();
-    }
+	static void Main(string[] args)
+	{
+		var builder = Host.CreateApplicationBuilder(args);
+		builder.Services.AddHostedService<Publisher>();
+		builder.Build().Run();
+	}
 }
 
 internal class Publisher : BackgroundService
 {
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        await using var client = new ServiceBusClient(Config.ConnectionString);
-        var sender = client.CreateSender(Config.TopicName);
-        int num = 0;
+	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+	{
+		await using var client = new ServiceBusClient(Config.ConnectionString);
+		var sender = client.CreateSender(Config.TopicName);
+		int num = 0;
 
-        while(!stoppingToken.IsCancellationRequested)
-        {
-            var messageTopic = Config.SubscriptionName[num % 2];
-            var timestamp = DateTime.Now.ToString();
-            var randomstring = RandomStringGenerator.GenerateRandomString();
-            var body = $"{timestamp} : {Config.TopicName} : {messageTopic,4} : {num:00000} : {randomstring}";
-            var message = new ServiceBusMessage(body);
-            message.ApplicationProperties.Add("MessageNumber", num);
-            message.ApplicationProperties.Add("MessageTopic", messageTopic);
-            await sender.SendMessageAsync(message, stoppingToken);
-            Console.WriteLine($"{message.Body}");
-            num++;
-            await Task.Delay(1000, stoppingToken);
-        }
-    }
+		while (!stoppingToken.IsCancellationRequested)
+		{
+			var messageTopic = Config.SubscriptionName[num % 2];
+			var timestamp = DateTime.Now.ToString();
+			var randomstring = RandomStringGenerator.GenerateRandomString();
+			var body = $"{timestamp} : {Config.TopicName} : {messageTopic,4} : {num:00000} : {randomstring}";
+			var message = new ServiceBusMessage(body);
+			message.ContentType = "text/string";
+			message.ApplicationProperties.Add("MessageNumber", num);
+			message.ApplicationProperties.Add("MessageTopic", messageTopic);
+			await sender.SendMessageAsync(message, stoppingToken);
+			Console.WriteLine($"{message.Body}");
+			num++;
+			await Task.Delay(1000, stoppingToken);
+		}
+	}
 }
