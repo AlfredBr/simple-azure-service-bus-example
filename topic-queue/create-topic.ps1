@@ -29,12 +29,9 @@ New-AzServiceBusTopic -ResourceGroupName $resourceGroupName -NamespaceName $name
 New-AzServiceBusAuthorizationRule -ResourceGroupName $resourceGroupName -Namespace $namespaceName -TopicName $topicName -Name $sasPolicyName -Rights 'Manage', 'Send', 'Listen'
 
 # Subscriptions are created at the topic level
-$odd = "odd"
-$even = "even"
 New-AzServiceBusSubscription -ResourceGroupName $resourceGroupName -NamespaceName $namespaceName -TopicName $topicName -Name $odd
 New-AzServiceBusSubscription -ResourceGroupName $resourceGroupName -NamespaceName $namespaceName -TopicName $topicName -Name $even
 
 # Create the filter rules
-$rule = "-rule"
 New-AzServiceBusRule -ResourceGroupName $resourceGroupName -NamespaceName $namespaceName -TopicName $topicName -SubscriptionName $odd -Name $($odd+$rule) -FilterType CorrelationFilter -ContentType "text/string" -CorrelationFilterProperty @{MessageTopic='odd'}
 New-AzServiceBusRule -ResourceGroupName $resourceGroupName -NamespaceName $namespaceName -TopicName $topicName -SubscriptionName $even -Name $($even+$rule) -FilterType CorrelationFilter -ContentType "text/string" -CorrelationFilterProperty @{MessageTopic='even'}
