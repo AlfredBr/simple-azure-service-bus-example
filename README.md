@@ -13,15 +13,16 @@ This is the simplest Azure Service Bus example I could dream up.
 * *subscriber* subscribes to a topic with the name _even_ or _odd_ and will receive messages from that topic only.
 * *shared* is a library containing Config.cs to which you must add your endpoint _connection string_.
 
-You'll have to configure your Azure Service Bus accordingly in order for this sample application to work correctly, but that should be fairly easy.
+You'll have to configure your Azure Service Bus accordingly in order for this sample application to work correctly, but that should be fairly easy.  I've added PowerShell scripts to create and delete the queue's in Azure.  Just add your Azure Subscription Id in _azure-variables.ps1_ and you should be good to go...
 
 Here are some hints...
 
-1. Create a queue named *test-queue*.
-2. Create a topic named *test-topic*.
-3. Create two subscriptions, one named *even* and the other named *odd*.
-4. The *even* subscription should have a custom property filter with a key named "messageTopic" and a value "even".
-5. The *odd* subscription should have a custom property filter with a key named "messageTopic" and a value "odd".
+1. Create a queue named *demo-asb-queuename*.
+2. Create a topic named *demo-asb-topicname*.
+3. Create two subscriptions, one named *even* and the other named *odd*.4. 
+5. The *even* subscription should have a custom property filter with a key named "messageTopic" and a value "even".
+6. The *odd* subscription should have a custom property filter with a key named "messageTopic" and a value "odd".
+7. Both subscriptions should have a system property named "contentType" with a value of "text/string".
 
 When your Azure Service Bus is properly set up...
 
