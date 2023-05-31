@@ -19,10 +19,10 @@ Here are some hints...
 
 1. Create a queue named *demo-asb-queuename*.
 2. Create a topic named *demo-asb-topicname*.
-3. Create two subscriptions, one named *even* and the other named *odd*.4. 
-5. The *even* subscription should have a custom property filter with a key named "messageTopic" and a value "even".
-6. The *odd* subscription should have a custom property filter with a key named "messageTopic" and a value "odd".
-7. Both subscriptions should have a system property named "contentType" with a value of "text/string".
+3. Create two subscriptions, one named *even* and the other named *odd*.
+4. The *even* subscription should have a custom property filter with a key named "messageTopic" and a value "even".
+5. The *odd* subscription should have a custom property filter with a key named "messageTopic" and a value "odd".
+6. Both subscriptions should have a system property named "contentType" with a value of "text/string".
 
 When your Azure Service Bus is properly set up...
 
