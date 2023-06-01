@@ -1,5 +1,5 @@
 # simple-azure-service-bus-example
-This is the simplest Azure Service Bus example I could dream up.
+This is the simplest Azure Service Bus example I could dream up.  _(All code is in C#.  The Azure config script is in PowerShell.)_
 
 *simple-queue* is just two console apps and a small class library.
 
