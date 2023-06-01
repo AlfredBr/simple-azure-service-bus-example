@@ -3,19 +3,20 @@ This is the simplest Azure Service Bus example I could dream up.
 
 _(All code is written in C#.  The Azure config script is written in PowerShell.)_
 
-*simple-queue* is just two console apps and a small class library.
+#### *simple-queue* is just two console apps and a small class library.
 
 * *sender* sends the current time, a random 5 character string and an index to a Azure Service Bus queue.
 * *receiver* receives (and removes) the message from the queue.
 * *shared* is a library containing Config.cs to which you must add your endpoint _connection string_.
 
-*topic-queue* is also a pair of console apps and a small class library.
+#### *topic-queue* is also a pair of console apps and a small class library.
 
 * *publisher* sends the current time, a random 5 character string and an index to a Azure Service Bus queue, but also sets a _MessageTopic_ property to either _even_ or _odd_ depending on if the index is an even or an odd number.
 * *subscriber* subscribes to a topic with the name _even_ or _odd_ and will receive messages from that topic only.
 * *shared* is a library containing Config.cs to which you must add your endpoint _connection string_.
 
-You'll have to configure your Azure Service Bus accordingly in order for this sample application to work correctly, but that should be fairly easy.  I've added PowerShell scripts to create and delete the queue's in Azure.  Just add your Azure Subscription Id in _azure-variables.ps1_ and you should be good to go...
+You'll have to configure your Azure Service Bus accordingly in order for this sample application to work correctly, but that should be fairly easy.  I've added PowerShell scripts to create and delete the queue's in Azure.  
+#### Just add your Azure Subscription Id in _azure-variables.ps1_ and you should be good to go...
 
 Here are some hints...
 
