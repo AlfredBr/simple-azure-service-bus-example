@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Azure.Messaging.ServiceBus;
 using shared;
@@ -20,6 +21,12 @@ internal static class Program
 
 internal class Sender : BackgroundService
 {
+	private IConfiguration _configuration;
+
+	public Sender(IConfiguration configuration)
+	{
+		_configuration = configuration;
+	}
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await using var client = new ServiceBusClient(Config.ConnectionString);
