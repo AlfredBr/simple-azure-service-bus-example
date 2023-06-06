@@ -1,4 +1,22 @@
-. ../azure-variables.ps1
+try {
+    . ../azure-variables.ps1
+} catch {
+    exit
+}
+
+if ($null -eq $azureSubscriptionId)
+{
+	Write-Output "Please set the 'azure-subscription-id' environment variable."
+	exit
+}
+
+$subscriptionId = $azureSubscriptionId.Value
+
+# verify that $subscriptionId is set
+if ([string]::IsNullOrEmpty($subscriptionId)) {
+    Write-Output "Please set the 'azure-subscription-id' environment variable."
+    exit
+}
 
 # Install Azure PowerShell module if not already installed
 if (-not (Get-Module -ListAvailable Az))
@@ -35,3 +53,22 @@ New-AzServiceBusSubscription -ResourceGroupName $resourceGroupName -NamespaceNam
 # Create the filter rules
 New-AzServiceBusRule -ResourceGroupName $resourceGroupName -NamespaceName $namespaceName -TopicName $topicName -SubscriptionName $odd -Name $($odd+$rule) -FilterType CorrelationFilter -ContentType "text/string" -CorrelationFilterProperty @{MessageTopic='odd'}
 New-AzServiceBusRule -ResourceGroupName $resourceGroupName -NamespaceName $namespaceName -TopicName $topicName -SubscriptionName $even -Name $($even+$rule) -FilterType CorrelationFilter -ContentType "text/string" -CorrelationFilterProperty @{MessageTopic='even'}
+
+# Get the SAS Policy key
+$sasPolicyKey = Get-AzServiceBusKey -ResourceGroupName $resourceGroupName -NamespaceName $namespaceName -TopicName $topicName -Name $sasPolicyName
+
+# Get the Primary Connection String
+$primaryConnectionString = $sasPolicyKey.PrimaryConnectionString
+
+# store the connection string in an object
+$connectionStringObj = @{connectionString=$primaryConnectionString; queueName=$queueName; topicName=$topicName}
+
+# save the connection string to a file
+ConvertTo-Json -InputObject $connectionStringObj | Out-File -FilePath appsettings.json -Encoding ascii
+
+# copy the appsettings.json file to the simple-queue folder
+Copy-Item -Path appsettings.json -Destination publisher\appsettings.json -Force
+Copy-Item -Path appsettings.json -Destination subscriber\appsettings.json -Force
+
+# Delete the appsettings.json file
+Remove-Item -Path appsettings.json -Force

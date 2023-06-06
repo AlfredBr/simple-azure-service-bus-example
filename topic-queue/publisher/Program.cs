@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Azure.Messaging.ServiceBus;
 using shared;
@@ -20,10 +21,18 @@ internal static class Program
 
 internal class Publisher : BackgroundService
 {
+	private IConfiguration _configuration;
+
+	public Publisher(IConfiguration configuration)
+	{
+		_configuration = configuration;
+	}
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
-		await using var client = new ServiceBusClient(Config.ConnectionString);
-		var sender = client.CreateSender(Config.TopicName);
+		var connectionString = _configuration["connectionString"];
+		var topicName = _configuration["topicName"];
+		await using var client = new ServiceBusClient(connectionString);
+		var sender = client.CreateSender(topicName);
 		int num = 0;
 
 		while (!stoppingToken.IsCancellationRequested)
@@ -31,7 +40,7 @@ internal class Publisher : BackgroundService
 			var messageTopic = Config.SubscriptionName[num % 2];
 			var timestamp = DateTime.Now.ToString();
 			var randomstring = RandomStringGenerator.GenerateRandomString();
-			var body = $"{timestamp} : {Config.TopicName} : {messageTopic,4} : {num:00000} : {randomstring}";
+			var body = $"{timestamp} : {topicName} : {messageTopic,4} : {num:00000} : {randomstring}";
 			var message = new ServiceBusMessage(body);
 			message.ContentType = "text/string";
 			message.ApplicationProperties.Add("MessageNumber", num);
