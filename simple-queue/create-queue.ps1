@@ -52,4 +52,15 @@ $sasPolicyKey = Get-AzServiceBusKey -ResourceGroupName $resourceGroupName -Names
 # Get the Primary Connection String
 $primaryConnectionString = $sasPolicyKey.PrimaryConnectionString
 
-$primaryConnectionString
+# store the connection string in an object
+$connectionStringObj = @{connectionString=$primaryConnectionString; queueName=$queueName}
+
+# save the connection string to a file
+ConvertTo-Json -InputObject $connectionStringObj | Out-File -FilePath appsettings.json -Encoding ascii
+
+# copy the appsettings.json file to the simple-queue folder
+Copy-Item -Path appsettings.json -Destination sender\appsettings.json -Force
+Copy-Item -Path appsettings.json -Destination receiver\appsettings.json -Force
+
+# Delete the appsettings.json file
+Remove-Item -Path appsettings.json -Force

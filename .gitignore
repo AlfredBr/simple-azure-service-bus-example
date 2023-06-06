@@ -475,3 +475,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+simple-queue/receiver/appsettings.json
+simple-queue/sender/appsettings.json

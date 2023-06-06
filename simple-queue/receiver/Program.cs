@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Azure.Messaging.ServiceBus;
 using shared;
+using Microsoft.Extensions.Configuration;
 
 namespace subscriber;
 
@@ -10,33 +11,41 @@ namespace subscriber;
 
 internal static class Program
 {
-    static void Main(string[] args)
-    {
-        var builder = Host.CreateApplicationBuilder(args);
-        builder.Services.AddHostedService<Receiver>();
-        builder.Build().Run();
-    }
+	static void Main(string[] args)
+	{
+		var builder = Host.CreateApplicationBuilder(args);
+		builder.Services.AddHostedService<Receiver>();
+		builder.Build().Run();
+	}
 }
 
 internal class Receiver : BackgroundService
 {
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        await using var client = new ServiceBusClient(Config.ConnectionString);
-        var options = new ServiceBusReceiverOptions
-        {
-            ReceiveMode = ServiceBusReceiveMode.ReceiveAndDelete
-        };
-        var receiver = client.CreateReceiver(Config.QueueName, options);
+	private IConfiguration _configuration;
 
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            var message = await receiver.ReceiveMessageAsync(null, stoppingToken);
-            if (message is not null)
-            {
-                var num = message.ApplicationProperties["MessageNumber"];
-                Console.WriteLine($"{message.Body} {num:00000} [{message.MessageId}]");
-            }
-        }
-    }
+	public Receiver(IConfiguration configuration)
+	{
+		_configuration = configuration;
+	}
+	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+	{
+		var connectionString = _configuration["connectionString"];
+		var queueName = _configuration["queueName"];
+		await using var client = new ServiceBusClient(connectionString);
+		var options = new ServiceBusReceiverOptions
+		{
+			ReceiveMode = ServiceBusReceiveMode.ReceiveAndDelete
+		};
+		var receiver = client.CreateReceiver(queueName, options);
+
+		while (!stoppingToken.IsCancellationRequested)
+		{
+			var message = await receiver.ReceiveMessageAsync(null, stoppingToken);
+			if (message is not null)
+			{
+				var num = message.ApplicationProperties["MessageNumber"];
+				Console.WriteLine($"{message.Body} {num:00000} [{message.MessageId}]");
+			}
+		}
+	}
 }
