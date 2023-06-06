@@ -29,7 +29,7 @@ if (-not (Get-Module -ListAvailable Az))
 Connect-AzAccount
 
 # Set the Azure subscription context
-Set-AzContext -SubscriptionId $subscriptionId.Value
+Set-AzContext -SubscriptionId $subscriptionId
 
 # Delete a Service Bus queue
 Remove-AzServiceBusQueue -ResourceGroupName $resourceGroupName -Namespace $namespaceName -QueueName $queueName
