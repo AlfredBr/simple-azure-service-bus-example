@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Azure.Messaging.ServiceBus;
-using shared;
 using Microsoft.Extensions.Configuration;
 
 namespace subscriber;

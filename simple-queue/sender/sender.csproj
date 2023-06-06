@@ -14,8 +14,4 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\shared\shared.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace shared;
+namespace publisher;
 
 public static class RandomStringGenerator
 {
