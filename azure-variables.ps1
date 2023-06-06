@@ -1,5 +1,5 @@
-# Set the Azure subscription context
-$subscriptionId = "<your-azure-subscription-id>"
+# Set the Azure Subscription Id
+$azureSubscriptionId = Get-Item -Path Env:azure-subscription-id
 
 # Set the Azure location
 $location = "East US"
