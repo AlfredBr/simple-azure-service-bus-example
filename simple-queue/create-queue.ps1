@@ -1,4 +1,22 @@
-. ../azure-variables.ps1
+try {
+    . ../azure-variables.ps1
+} catch {
+    exit
+}
+
+if ($null -eq $azureSubscriptionId)
+{
+	Write-Output "Please set the 'azure-subscription-id' environment variable."
+	exit
+}
+
+$subscriptionId = $azureSubscriptionId.Value
+
+# verify that $subscriptionId is set
+if ([string]::IsNullOrEmpty($subscriptionId)) {
+    Write-Output "Please set the 'azure-subscription-id' environment variable."
+    exit
+}
 
 # Install Azure PowerShell module if not already installed
 if (-not (Get-Module -ListAvailable Az))
@@ -14,7 +32,7 @@ Connect-AzAccount
 Set-AzContext -SubscriptionId $subscriptionId
 
 # Create a new resource group
-New-AzResourceGroup -Name $resourceGroupName -Location $location
+New-AzResourceGroup -Name $resourceGroupName -Location $location -Force
 
 # Create a new Service Bus namespace
 New-AzServiceBusNamespace -Name $namespaceName -ResourceGroupName $resourceGroupName -Location $location
@@ -28,5 +46,3 @@ New-AzServiceBusAuthorizationRule -ResourceGroupName $resourceGroupName -Namespa
 # Get the SAS Policy for the queue
 $sasPolicy = Get-AzServiceBusAuthorizationRule -ResourceGroupName $resourceGroupName -Namespace $namespaceName -QueueName $queueName -Name $sasPolicyName
 
-# Print the primary connection string
-Write-Host "Primary Connection String: $($sasPolicy.PrimaryConnectionString)"
