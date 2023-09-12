@@ -41,5 +41,5 @@ Run the *subscriber* with the argument "even" or "odd" to subscribe to one of th
 
 **dotnet run --subscribe odd** will select the "odd" subscription.
 
-![Made with C#](https://forthebadge.com/images/badges/made-with-c-sharp.svg)
+
 
