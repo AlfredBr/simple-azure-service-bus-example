@@ -1,9 +1,9 @@
 # simple-azure-service-bus-example
-This is the simplest Azure Service Bus example I could dream up.  
+This is the simplest Azure Service Bus example I could dream up.
 
 _(All code is written in C#.  The Azure config scripts are written in PowerShell.)_
 
-You'll have to configure your Azure Service Bus accordingly in order for this sample application to work correctly, but that should be fairly easy.  I've added PowerShell scripts in each folder to create and delete the queue's in Azure.  
+You'll have to configure your Azure Service Bus accordingly in order for this sample application to work correctly, but that should be fairly easy.  I've added PowerShell scripts in each folder to create and delete the queue's in Azure.
 
 #### Just set the 'azure-subscription-id' to your Azure Subscription Id (it is read in on line #2 of _azure-variables.ps1_).
 #### Run the _create-queue.ps1_ script.
