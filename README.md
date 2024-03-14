@@ -5,8 +5,8 @@ _(All code is written in C#.  The Azure config scripts are written in PowerShell
 
 You'll have to configure your Azure Service Bus accordingly in order for this sample application to work correctly, but that should be fairly easy.  I've added PowerShell scripts in each folder to create and delete the queue's in Azure.
 
-#### First, set the '$azure-subscription-id' variable to your Azure Subscription Id (it is read in on line #2 of _azure-variables.ps1_).
-#### Then, run the _create-queue.ps1_ script.
+#### First, create an environemtn variable called 'azure-subscription-id' and set it to your Azure Subscription Id (it is read in from your environment on line #2 of _azure-variables.ps1_).
+#### Then, in _simple_queue_ run the _create-queue.ps1_ script.
 
 Here are some hints...
 
