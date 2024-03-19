@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Azure.Messaging.ServiceBus;
+using System;
+using System.Diagnostics;
 
 namespace publisher;
 
@@ -34,15 +36,18 @@ internal class Sender : BackgroundService
 		var sender = client.CreateSender(queueName);
 		int num = 0;
 
+		var randomstring = RandomStringGenerator.GenerateRandomString();
+
 		while (!stoppingToken.IsCancellationRequested)
 		{
-			var timestamp = DateTime.Now.ToString();
-			var randomstring = RandomStringGenerator.GenerateRandomString();
-			var message = new ServiceBusMessage($"{timestamp} {randomstring}");
+			var timestamp = $"[{DateTime.Now.ToString("HH:mm:ss.fff")}]";
+			var message = new ServiceBusMessage($"{timestamp} {{ msg: '{randomstring}' }}");
+			message.TimeToLive = TimeSpan.FromSeconds(5);
 			message.ApplicationProperties.Add("MessageNumber", num++);
+			var sw = Stopwatch.StartNew();
 			await sender.SendMessageAsync(message, stoppingToken);
-			Console.WriteLine($"{message.Body}");
-			await Task.Delay(1000, stoppingToken);
+			Console.WriteLine($"{message.Body} {sw.ElapsedMilliseconds}ms");
+			await Task.Delay(10, stoppingToken);
 		}
 	}
 }
